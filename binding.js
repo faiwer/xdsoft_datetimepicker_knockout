@@ -75,14 +75,18 @@ var parseDate = function(value) // example
 				scrollMonth:    !params.inline
 			}
 			$el.datetimepicker(cfg);
+			var picker = $el.data('xdsoft_datetimepicker');
 
 			if(ko.isObservable(params.value))
 				var valueUpdate = params.value.subscribe(function(newValue)
 				{
 					if(!newValue)
 						$el.datetimepicker('reset');
-					newValue = parseDate(newValue);
-					$el.datetimepicker({value: newValue});
+					else
+					{
+						picker.setOptions({value: parseDate(newValue)});
+						$el.val(picker.data('xdsoft_datetime').str()); // hack
+					}
 				});
 
 			$el.change(function()
